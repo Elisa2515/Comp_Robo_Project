@@ -1,9 +1,10 @@
 """
 DrawSquareSimple
 ----------------
-This file is meant to drive the robot in a square
+Drive the robot in a square using open-loop timing (sleep).
 """
 
+import math
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
@@ -12,7 +13,7 @@ from time import sleep
 
 
 class DrawSquareSimple(Node):
-    """Drive in a square using sleep"""
+    """Drive in a square using sleep-based timing."""
 
     def __init__(self):
         super().__init__('draw_square_simple')
@@ -21,49 +22,60 @@ class DrawSquareSimple(Node):
         self.vel_pub = self.create_publisher(Twist, 'cmd_vel', 10)
 
         # Start the thread that executes the square
-        self.thread = Thread(target=self.run_loop)
+        self.thread = Thread(target=self.run_loop, daemon=True)
         self.thread.start()
 
         self.get_logger().info("DrawSquareSimple node started.")
 
     def drive(self, linear, angular):
-        """Publish twist message."""
+        """Publish a Twist message."""
         msg = Twist()
-        msg.linear.x = linear
-        msg.angular.z = angular
+        msg.linear.x = float(linear)
+        msg.angular.z = float(angular)
         self.vel_pub.publish(msg)
 
-    def drive_forward(self, distance):
-        """Drive straight using simple timing."""
+    def stop(self):
+        """Stop the robot."""
+        self.drive(0.0, 0.0)
+
+    def drive_forward(self, distance_m):
+        """Drive straight for a distance using timing."""
         speed = 0.2  # m/s
-        duration = distance / speed
+        duration = abs(distance_m) / speed
 
-        self.drive(speed, 0.0)
+        direction = 1.0 if distance_m >= 0 else -1.0
+        self.drive(direction * speed, 0.0)
         sleep(duration)
-        self.drive(0.0, 0.0)
+        self.stop()
+        sleep(0.2)  # brief settle
 
-    def turn(self, angle_radians):
-        """Turn in place using timing."""
+    def turn(self, angle_rad):
+        """Turn in place for an angle using timing."""
         ang_speed = 0.4  # rad/s
-        duration = angle_radians / ang_speed
+        duration = abs(angle_rad) / ang_speed
 
-        self.drive(0.0, ang_speed)
+        direction = 1.0 if angle_rad >= 0 else -1.0
+        self.drive(0.0, direction * ang_speed)
         sleep(duration)
-        self.drive(0.0, 0.0)
+        self.stop()
+        sleep(0.2)  # brief settle
 
     def run_loop(self):
-        """Main function that drives the square."""
+        """Main behavior: drive a 0.5m square."""
         sleep(1.0)  # small delay before starting
 
+        side_len = 0.5
+        turn_ang = math.pi / 2
+
         for i in range(4):
-            self.get_logger().info(f"Side {i+1}: driving forward")
-            self.drive_forward(0.5)
+            self.get_logger().info(f"Side {i+1}: driving forward {side_len} m")
+            self.drive_forward(side_len)
 
             self.get_logger().info(f"Side {i+1}: turning 90 degrees")
-            self.turn(math.pi / 2)
+            self.turn(turn_ang)
 
         self.get_logger().info("Square complete!")
-        self.drive(0.0, 0.0)
+        self.stop()
 
 
 def main(args=None):
