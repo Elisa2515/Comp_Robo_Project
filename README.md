@@ -1,11 +1,11 @@
 ## Robo Behaviors Project
 
 The first project for Computational Robotics was an introduction to working in ROS 2 with the Neato robot platform. In this project, we implemented a set of robot behaviors that demonstrate basic robot control, sensor processing, and autonomous decision-making. These behaviors include robot teleoperation, driving in a square, wall following, person following, and obstacle avoidance.
----
+
 ## Robot Teleop
 
 The teleoperation mode allows a human user to directly control the robot’s motion using keyboard input. Specific keys are mapped to motion states, allowing the robot to move forward, move backward, turn left, turn right, and stop. This behavior was useful for testing basic motion commands and gaining intuition about how velocity commands affect the robot’s movement.
----
+
 ## Driving in a Square
 
 The goal of the square path navigation behavior was to drive the Neato robot in a square pattern autonomously. To achieve this, a time-based control approach was used. The main loop repeats once for each side of the square. For each iteration, the robot drives forward for a predetermined amount of time and then performs an in-place 90-degree turn.
@@ -20,13 +20,12 @@ def turn(self, degrees):
     sleep(degrees / angular_vel)
     self.drive(linear=0.0, angular=0.0)
 ```
----
 ## Wall Following
 
 The wall following behavior allows the robot to maintain a fixed distance from a nearby wall while driving forward. This behavior uses laser scan data to detect the closest object around the robot and treats that object as the wall.
 
 If no valid wall is detected, the robot rotates slowly in place to search. Once a wall is found, the robot determines whether the wall is on its left or right side and attempts to keep the wall at a perpendicular angle (90° on the left or 270° on the right).
----
+
 ## Laser Processing
 
 Invalid laser readings (infinite or NaN values) are filtered out
