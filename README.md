@@ -1,10 +1,10 @@
 ## Robo Behaviors Project
 
-The first project for Computational Robotics was an introduction to working in ROS 2 with the Neato robot platform. In this project, we implemented a set of robot behaviors that demonstrate basic robot control, sensor processing, and autonomous decision-making. These behaviors include robot teleoperation, driving in a square, wall following, person following, and obstacle avoidance.
+The first project for Computational Robotics was an introduction to working in ROS 2 with the Neato robot platform. In this project, I implemented a set of robot behaviors that demonstrate basic robot control, sensor processing, and autonomous decision-making. These behaviors include robot driving in a square, wall following, person following, with some obstacle avoidance.
 
 ## Robot Teleop
 
-The teleoperation mode allows a human user to directly control the robot’s motion using keyboard input. Specific keys are mapped to motion states, allowing the robot to move forward, move backward, turn left, turn right, and stop. This behavior was useful for testing basic motion commands and gaining intuition about how velocity commands affect the robot’s movement.
+First I experimented with teleoperation mode allows a human user to directly control the robot’s motion using keyboard input. Specific keys are mapped to motion states, allowing the robot to move forward, move backward, turn left, turn right, and stop. This behavior was useful for testing basic motion commands and gaining intuition about how velocity commands affect the robot’s movement.
 
 ## Driving in a Square
 
@@ -20,6 +20,7 @@ def turn(self, degrees):
     sleep(degrees / angular_vel)
     self.drive(linear=0.0, angular=0.0)
 ```
+
 ## Wall Following
 
 The wall following behavior allows the robot to maintain a fixed distance from a nearby wall while driving forward. This behavior uses laser scan data to detect the closest object around the robot and treats that object as the wall.
@@ -48,7 +49,7 @@ Speed limits are applied to prevent unsafe or unstable motion. This simple appro
 
 ## Person Following
 
-The person following behavior allows the robot to follow a person using laser scan data. The robot searches for the closest object directly in front of it and assumes that object is the person.
+The person following behavior allows the neato to follow a "person" using laser scan data. The neato searches for the closest object directly in front of it and assumes that object is the person.
 
 If no object is detected, the robot slowly rotates in place to search. When a person is detected, the robot turns to face them and moves forward or backward to maintain a desired following distance.
 
@@ -64,7 +65,7 @@ Objects that are too close or too far away are ignored to reduce noise
 
 ## Control Strategy
 
-A simple proportional controller is used:
+A proportional controller is used:
 
 Angular control keeps the robot facing the person
 
@@ -74,8 +75,8 @@ The robot only moves forward when the person is roughly centered in front of it.
 
 ## Obstacle Avoidance
 
-Obstacle avoidance allows the robot to reactively prevent collisions using laser scan data. When an obstacle is detected within a certain distance, the robot adjusts its motion to avoid it by slowing down, stopping, or turning away. This behavior demonstrates basic reactive control and safe navigation in cluttered environments.
+Obstacle avoidance allows the neato to reactively prevent collisions using laser scan data. When an obstacle is detected within a certain distance, the neato adjusts its motion to avoid it by slowing down, stopping, or turning away. This behavior demonstrates basic reactive control and safe navigation in cluttered environments.
 
 ## Summary
 
-This project provided hands-on experience with ROS 2, sensor data processing, and basic robot control strategies. By implementing multiple behaviors, we explored both open-loop and closed-loop control, as well as the challenges of using real sensor data for autonomous decision-making.
+This project provided hands-on experience with ROS 2, sensor data processing, and basic robot control strategies in a simulated world. By implementing multiple behaviors, I was able to explore both open-loop and closed-loop control, as well as the challenges of using real sensor data for autonomous decision-making.
