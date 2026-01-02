@@ -31,7 +31,7 @@ Resampling – Particles are resampled based on their weights to concentrate lik
 
 ## Scope and Limitations
 
-This exercise intentionally does not include laser scan processing or map-based localization. Instead, it focuses on the core mechanics of particle filtering—motion uncertainty, weighting, and resampling—to provide a clear and accessible implementation.
+This exercise intentionally does not include laser scan processing or map-based localization. Instead, I focused on the core mechanics of particle filtering—motion uncertainty, weighting, and resampling—to provide a clear and accessible implementation.
 
 ## Key Takeaways
 
